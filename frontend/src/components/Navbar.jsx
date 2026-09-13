@@ -378,6 +378,17 @@ export default function Navbar() {
                       My Profile
                     </Link>
 
+                    {user?.role === 'admin' && (
+                      <Link
+                        to="/admin"
+                        onClick={() => setUserDropdownOpen(false)}
+                        className="flex items-center gap-2.5 px-4 py-2 text-xs font-bold text-emerald-700 hover:bg-emerald-50 transition-colors"
+                      >
+                        <LayoutDashboard className="w-4 h-4 text-emerald-600" />
+                        Admin Console
+                      </Link>
+                    )}
+
                     <div className="border-t border-slate-100 my-1"></div>
 
                     <button
@@ -406,7 +417,7 @@ export default function Navbar() {
                   className="hidden sm:inline-block px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full text-xs font-semibold shadow-xs transition-colors"
                 >
                   Register
-                </Link>
+                                </Link>
               </div>
             )}
 
@@ -438,55 +449,55 @@ export default function Navbar() {
             Browse Categories
           </Link>
           <Link
-            to="/products?category=fresh-fruits"
+            to="/category/fresh-fruits"
             className="hover:text-emerald-700 transition-colors shrink-0"
           >
             🍎 Fresh Fruits
           </Link>
           <Link
-            to="/products?category=fresh-vegetables"
+            to="/category/fresh-vegetables"
             className="hover:text-emerald-700 transition-colors shrink-0"
           >
             🥦 Vegetables
           </Link>
           <Link
-            to="/products?category=dairy-breakfast"
+            to="/category/dairy-breakfast"
             className="hover:text-emerald-700 transition-colors shrink-0"
           >
             🥛 Dairy & Breakfast
           </Link>
           <Link
-            to="/products?category=rice-grains"
+            to="/category/rice-grains"
             className="hover:text-emerald-700 transition-colors shrink-0"
           >
             🌾 Rice & Grains
           </Link>
           <Link
-            to="/products?category=pulses-dals"
+            to="/category/pulses-dals"
             className="hover:text-emerald-700 transition-colors shrink-0"
           >
             🥣 Dals & Pulses
           </Link>
           <Link
-            to="/products?category=oil-ghee"
+            to="/category/oil-ghee"
             className="hover:text-emerald-700 transition-colors shrink-0"
           >
             🧈 Oil & Ghee
           </Link>
           <Link
-            to="/products?category=snacks-biscuits"
+            to="/category/snacks-biscuits"
             className="hover:text-emerald-700 transition-colors shrink-0"
           >
             🍪 Snacks & Biscuits
           </Link>
           <Link
-            to="/products?category=beverages"
+            to="/category/beverages"
             className="hover:text-emerald-700 transition-colors shrink-0"
           >
             🧃 Beverages
           </Link>
           <Link
-            to="/products?category=tea-coffee"
+            to="/category/tea-coffee"
             className="hover:text-emerald-700 transition-colors shrink-0"
           >
             ☕ Tea & Coffee
@@ -552,28 +563,28 @@ export default function Navbar() {
               <span>📂 15 Categories</span>
             </Link>
             <Link
-              to="/products?category=fresh-fruits"
+              to="/category/fresh-fruits"
               onClick={() => setMobileMenuOpen(false)}
               className="p-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 flex items-center gap-2"
             >
               <span>🍎 Fresh Fruits</span>
             </Link>
             <Link
-              to="/products?category=fresh-vegetables"
+              to="/category/fresh-vegetables"
               onClick={() => setMobileMenuOpen(false)}
               className="p-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 flex items-center gap-2"
             >
               <span>🥦 Vegetables</span>
             </Link>
             <Link
-              to="/products?category=dairy-breakfast"
+              to="/category/dairy-breakfast"
               onClick={() => setMobileMenuOpen(false)}
               className="p-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 flex items-center gap-2"
             >
               <span>🥛 Dairy & Eggs</span>
             </Link>
             <Link
-              to="/products?category=rice-grains"
+              to="/category/rice-grains"
               onClick={() => setMobileMenuOpen(false)}
               className="p-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 flex items-center gap-2"
             >

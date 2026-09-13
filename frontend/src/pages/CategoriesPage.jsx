@@ -61,7 +61,7 @@ export default function CategoriesPage() {
             return (
               <Link
                 key={cat.slug || cat._id}
-                to={`/products?category=${cat.slug}`}
+                to={`/category/${cat.slug}`}
                 className="group flex flex-col justify-between p-5 bg-white border border-slate-200/90 hover:border-emerald-400 rounded-2xl hover:shadow-md transition-all duration-300 relative overflow-hidden"
               >
                 <div className="flex items-start gap-4">

@@ -10,7 +10,7 @@ export default function CategoryCard({ category }) {
 
   return (
     <Link
-      to={`/products?category=${category.slug}`}
+      to={`/category/${category.slug}`}
       id={`category-card-${category.slug}`}
       className="group flex flex-col bg-white hover:bg-emerald-50/20 rounded-2xl border border-slate-200/90 hover:border-emerald-400 transition-all duration-300 hover:shadow-md overflow-hidden"
     >

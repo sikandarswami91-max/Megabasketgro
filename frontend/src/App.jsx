@@ -1,33 +1,34 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 
-// Providers
-import { AuthProvider } from './context/AuthContext.jsx';
-import { CartProvider } from './context/CartContext.jsx';
-import { WishlistProvider } from './context/WishlistContext.jsx';
-import { ToastProvider } from './context/ToastContext.jsx';
+  import { AuthProvider } from './context/AuthContext.jsx';
+  import { CartProvider } from './context/CartContext.jsx';
+  import { WishlistProvider } from './context/WishlistContext.jsx';
+  import { ToastProvider } from './context/ToastContext.jsx';
 
-// Core UI Components
-import Navbar from './components/Navbar.jsx';
-import Footer from './components/Footer.jsx';
-import ProtectedRoute from './components/ProtectedRoute.jsx';
+  // Core UI Components
+  import Navbar from './components/Navbar.jsx';
+  import Footer from './components/Footer.jsx';
+  import ProtectedRoute from './components/ProtectedRoute.jsx';
 
-// Customer Pages
-import HomePage from './pages/HomePage.jsx';
-import ProductsPage from './pages/ProductsPage.jsx';
-import ProductDetailsPage from './pages/ProductDetailsPage.jsx';
-import CategoriesPage from './pages/CategoriesPage.jsx';
-import SearchResultsPage from './pages/SearchResultsPage.jsx';
-import CartPage from './pages/CartPage.jsx';
-import WishlistPage from './pages/WishlistPage.jsx';
-import CheckoutPage from './pages/CheckoutPage.jsx';
-import OrdersPage from './pages/OrdersPage.jsx';
-import OrderDetailsPage from './pages/OrderDetailsPage.jsx';
-import LoginPage from './pages/LoginPage.jsx';
-import RegisterPage from './pages/RegisterPage.jsx';
-import ProfilePage from './pages/ProfilePage.jsx';
-import AddressesPage from './pages/AddressesPage.jsx';
-import CustomerDashboardPage from './pages/CustomerDashboardPage.jsx';
+  // Customer Pages
+  import HomePage from './pages/HomePage.jsx';
+  import ProductsPage from './pages/ProductsPage.jsx';
+  import ProductDetailsPage from './pages/ProductDetailsPage.jsx';
+  import CategoriesPage from './pages/CategoriesPage.jsx';
+  import CategoryProductsPage from './pages/CategoryProductsPage.jsx';
+  import SearchResultsPage from './pages/SearchResultsPage.jsx';
+  import CartPage from './pages/CartPage.jsx';
+  import WishlistPage from './pages/WishlistPage.jsx';
+  import CheckoutPage from './pages/CheckoutPage.jsx';
+  import OrdersPage from './pages/OrdersPage.jsx';
+  import OrderDetailsPage from './pages/OrderDetailsPage.jsx';
+  import LoginPage from './pages/LoginPage.jsx';
+  import RegisterPage from './pages/RegisterPage.jsx';
+  import ProfilePage from './pages/ProfilePage.jsx';
+  import AddressesPage from './pages/AddressesPage.jsx';
+  import CustomerDashboardPage from './pages/CustomerDashboardPage.jsx';
+  import AdminLoginPage from './pages/AdminLoginPage.jsx';
 
 // Admin Components & Pages
 import AdminLayout from './admin/AdminLayout.jsx';
@@ -85,6 +86,7 @@ export default function App() {
                   <Route path="/products" element={<ProductsPage />} />
                   <Route path="/products/:id" element={<ProductDetailsPage />} />
                   <Route path="/categories" element={<CategoriesPage />} />
+                  <Route path="/category/:slug" element={<CategoryProductsPage />} />
                   <Route path="/search" element={<SearchResultsPage />} />
                   <Route path="/cart" element={<CartPage />} />
                   <Route path="/wishlist" element={<WishlistPage />} />
@@ -142,6 +144,7 @@ export default function App() {
                   {/* Auth routes */}
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/register" element={<RegisterPage />} />
+                  <Route path="/admin/login" element={<AdminLoginPage />} />
 
                   <Route path="*" element={<NotFoundPage />} />
                 </Route>

@@ -1,19 +1,24 @@
 import axios from 'axios';
 
-// Base API URL: Always use the relative '/api' route so it proxies seamlessly
-// through port 3000 in both development and production, preventing invalid host/port prefixes.
+// Base API URL:
+//  - If VITE_API_URL is set to a full http(s) URL (e.g. http://localhost:5001/api),
+//    use it directly. This is honored in local development and keeps CORS simple
+//    (backend CORS is configured with origin '*').
+//  - Otherwise fall back to the relative '/api' path, which is production-safe
+//    when the frontend is served from the same origin as the backend. A dev
+//    proxy (`/api` -> backend) is configured in frontend/vite.config.js so that
+//    the relative path still resolves to the backend during local development.
 const getBaseApiUrl = () => {
   const envUrl = import.meta.env.VITE_API_URL;
-  if (!envUrl || typeof envUrl !== 'string') return '/api';
-  // If envUrl is malformed or accidentally includes variable assignments like "VITE_API_URL=" or hardcoded localhost:5001
-  if (
-    envUrl.includes('VITE_API_URL=') ||
-    envUrl.includes('localhost:5001') ||
-    envUrl.trim() === ''
-  ) {
-    return '/api';
+  if (typeof envUrl === 'string' && envUrl.trim() !== '') {
+    const trimmed = envUrl.trim();
+    // Strip any accidental "KEY=" prefix just in case
+    const cleaned = trimmed.includes('=') ? trimmed.split('=')[1].trim() : trimmed;
+    if (cleaned) {
+      return cleaned;
+    }
   }
-  return envUrl;
+  return '/api';
 };
 
 const API_URL = getBaseApiUrl();
