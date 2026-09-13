@@ -144,6 +144,11 @@ export default function Footer() {
             </h5>
             <ul className="space-y-2 text-xs text-slate-400">
               <li>
+                <Link to="/dashboard" className="hover:text-emerald-400 transition-colors">
+                  My Dashboard
+                </Link>
+              </li>
+              <li>
                 <Link to="/orders" className="hover:text-emerald-400 transition-colors">
                   Order History
                 </Link>
@@ -161,11 +166,6 @@ export default function Footer() {
               <li>
                 <Link to="/login" className="hover:text-emerald-400 transition-colors">
                   Sign In / Register
-                </Link>
-              </li>
-              <li>
-                <Link to="/admin" className="text-emerald-400/80 hover:text-emerald-300 font-semibold transition-colors">
-                  Admin Dashboard
                 </Link>
               </li>
             </ul>

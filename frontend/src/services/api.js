@@ -41,19 +41,34 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
+    const status = error.response?.status;
+    const currentPath = window.location.pathname;
+
+    if (status === 401) {
       // If token expired or invalid, clear local auth
-      const currentPath = window.location.pathname;
       if (
         currentPath.startsWith('/profile') ||
+        currentPath.startsWith('/dashboard') ||
         currentPath.startsWith('/checkout') ||
         currentPath.startsWith('/orders') ||
         currentPath.startsWith('/admin')
       ) {
         localStorage.removeItem('megabasket_token');
         localStorage.removeItem('megabasket_user');
+        if (currentPath.startsWith('/admin')) {
+          window.location.replace('/login');
+        }
       }
     }
+
+    if (status === 403 && currentPath.startsWith('/admin')) {
+      // Customer (or logged-out user) tried to access admin API:
+      // kick out of admin area back to storefront.
+      localStorage.removeItem('megabasket_token');
+      localStorage.removeItem('megabasket_user');
+      window.location.replace('/login');
+    }
+
     return Promise.reject(error);
   }
 );
@@ -146,6 +161,8 @@ export const adminService = {
   getAllUsers: (params) => api.get('/users', { params }),
   getUserById: (id) => api.get(`/users/${id}`),
   updateUserStatus: (id, data) => api.put(`/users/${id}/status`, data),
+  toggleUserStatus: (id, isActive) =>
+    api.put(`/users/${id}/status`, { isActive: Boolean(isActive) }),
 };
 
 

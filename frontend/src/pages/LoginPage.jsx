@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ShoppingBasket, Mail, Lock, Eye, EyeOff, ShieldCheck, User } from 'lucide-react';
+import { ShoppingBasket, Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 
@@ -36,15 +36,10 @@ export default function LoginPage() {
     }
   };
 
-  // Demo account quick fill helpers for reviewer convenience
+  // Demo account quick fill helper for reviewer convenience (customer only)
   const fillDemoCustomer = () => {
     setEmail('customer@megabasket.com');
     setPassword('Customer@123');
-  };
-
-  const fillDemoAdmin = () => {
-    setEmail('admin@megabasket.com');
-    setPassword('Admin@123');
   };
 
   return (
@@ -116,12 +111,12 @@ export default function LoginPage() {
           </button>
         </form>
 
-        {/* Demo Account Quick-Fill Helper Buttons */}
+        {/* Demo Account Quick-Fill Helper Button */}
         <div className="pt-2 border-t border-slate-100">
           <p className="text-[11px] font-semibold text-slate-600 uppercase tracking-wider text-center mb-2.5">
             ⚡ 1-Click Demo Login
           </p>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 gap-2">
             <button
               type="button"
               onClick={fillDemoCustomer}
@@ -129,14 +124,6 @@ export default function LoginPage() {
             >
               <User className="w-3.5 h-3.5" />
               <span>Customer Demo</span>
-            </button>
-            <button
-              type="button"
-              onClick={fillDemoAdmin}
-              className="py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-            >
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Admin Demo</span>
             </button>
           </div>
         </div>

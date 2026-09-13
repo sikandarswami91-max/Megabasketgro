@@ -7,8 +7,7 @@ import {
   User,
   Menu,
   X,
-  ShieldAlert,
-  LogOut,
+LogOut,
   MapPin,
   ChevronDown,
   ShoppingBasket,
@@ -17,6 +16,7 @@ import {
   Clock,
   Check,
   Percent,
+  LayoutDashboard,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useCart } from '../context/CartContext.jsx';
@@ -34,7 +34,7 @@ const POPULAR_LOCATIONS = [
 export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, isAuthenticated, isAdmin, logout } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
   const { totalItems, subtotal } = useCart();
   const { totalWishlist } = useWishlist();
 
@@ -340,23 +340,7 @@ export default function Navbar() {
                         {user.name}
                       </p>
                       <p className="text-[11px] text-slate-600 truncate">{user.email}</p>
-                      {isAdmin && (
-                        <span className="inline-block mt-1 px-2 py-0.5 bg-amber-100 text-amber-800 rounded-full text-[10px] font-bold">
-                          Admin Access
-                        </span>
-                      )}
                     </div>
-
-                    {isAdmin && (
-                      <Link
-                        to="/admin"
-                        onClick={() => setUserDropdownOpen(false)}
-                        className="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-emerald-700 hover:bg-emerald-50 transition-colors"
-                      >
-                        <ShieldAlert className="w-4 h-4 text-emerald-600" />
-                        Admin Dashboard
-                      </Link>
-                    )}
 
                     <Link
                       to="/orders"
@@ -365,6 +349,15 @@ export default function Navbar() {
                     >
                       <Package className="w-4 h-4 text-slate-600" />
                       My Orders
+                    </Link>
+
+                    <Link
+                      to="/dashboard"
+                      onClick={() => setUserDropdownOpen(false)}
+                      className="flex items-center gap-2.5 px-4 py-2 text-xs font-bold text-emerald-700 hover:bg-emerald-50 transition-colors"
+                    >
+                      <LayoutDashboard className="w-4 h-4 text-emerald-600" />
+                      My Dashboard
                     </Link>
 
                     <Link
@@ -609,15 +602,6 @@ export default function Navbar() {
                 </span>
               )}
             </Link>
-            {isAdmin && (
-              <Link
-                to="/admin"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-lg bg-emerald-50 text-emerald-800 font-bold"
-              >
-                Admin Panel (Products CRUD)
-              </Link>
-            )}
           </div>
         </div>
       )}

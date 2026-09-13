@@ -27,6 +27,7 @@ import LoginPage from './pages/LoginPage.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
 import AddressesPage from './pages/AddressesPage.jsx';
+import CustomerDashboardPage from './pages/CustomerDashboardPage.jsx';
 
 // Admin Components & Pages
 import AdminLayout from './admin/AdminLayout.jsx';
@@ -118,6 +119,14 @@ export default function App() {
                     element={
                       <ProtectedRoute>
                         <ProfilePage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/dashboard"
+                    element={
+                      <ProtectedRoute>
+                        <CustomerDashboardPage />
                       </ProtectedRoute>
                     }
                   />

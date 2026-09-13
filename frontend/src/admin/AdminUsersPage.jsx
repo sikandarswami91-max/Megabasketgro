@@ -29,11 +29,11 @@ export default function AdminUsersPage() {
     fetchUsers();
   }, []);
 
-  const handleToggleStatus = async (id) => {
+  const handleToggleStatus = async (user) => {
     try {
-      const res = await adminService.toggleUserStatus(id);
+      const res = await adminService.toggleUserStatus(user._id, !user.isActive);
       if (res.data.success) {
-        success('User status updated');
+        success(`User ${user.isActive ? 'suspended' : 'activated'} successfully`);
         fetchUsers();
       }
     } catch (err) {
@@ -140,7 +140,7 @@ export default function AdminUsersPage() {
                       {u.role !== 'admin' && (
                         <button
                           type="button"
-                          onClick={() => handleToggleStatus(u._id)}
+                          onClick={() => handleToggleStatus(u)}
                           className={`px-3 py-1 rounded-lg text-xs font-semibold cursor-pointer ${
                             u.isActive
                               ? 'bg-rose-50 text-rose-700 hover:bg-rose-100'
