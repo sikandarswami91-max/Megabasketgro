@@ -7,9 +7,47 @@ export default defineConfig(() => {
   return {
     plugins: [react(), tailwindcss()],
     resolve: {
-      alias: {
-        '@': path.resolve(__dirname, '.'),
-      },
+      alias: [
+        { find: '@', replacement: path.resolve(__dirname, '.') },
+        // Force a SINGLE copy of React across the root app and the nested
+        // frontend/ folder. Without this, files inside frontend/src resolve
+        // react/react-router-dom from frontend/node_modules while the root
+        // src/ entry uses root node_modules -> two React instances ->
+        // "Invalid hook call" errors (hooks see a different React than the
+        // renderer). Regex aliases also cover subpath imports such as
+        // react/jsx-runtime used by the automatic JSX transform.
+        {
+          find: /^react$/,
+          replacement: path.resolve(__dirname, 'node_modules/react'),
+        },
+        {
+          find: /^react\/(.*)$/,
+          replacement: path.resolve(__dirname, 'node_modules/react') + '/$1',
+        },
+        {
+          find: /^react-dom$/,
+          replacement: path.resolve(__dirname, 'node_modules/react-dom'),
+        },
+        {
+          find: /^react-dom\/(.*)$/,
+          replacement: path.resolve(__dirname, 'node_modules/react-dom') + '/$1',
+        },
+        // NOTE: no subpath aliases for react-router — "react-router/dom" is
+        // resolved via the package "exports" map, not a real file path.
+        {
+          find: /^react-router$/,
+          replacement: path.resolve(__dirname, 'node_modules/react-router'),
+        },
+        {
+          find: /^react-router-dom$/,
+          replacement: path.resolve(__dirname, 'node_modules/react-router-dom'),
+        },
+        {
+          find: /^react-router-dom\/(.*)$/,
+          replacement:
+            path.resolve(__dirname, 'node_modules/react-router-dom') + '/$1',
+        },
+      ],
     },
     build: {
       chunkSizeWarningLimit: 1000,

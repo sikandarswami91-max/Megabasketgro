@@ -65,9 +65,10 @@ export const getProducts = async (req, res) => {
       query.stock = { $gt: 0 };
     }
 
-    // Filter by rating
-    if (req.query.rating) {
-      query.rating = { $gte: Number(req.query.rating) };
+    // Filter by rating (accept both `rating` and `minRating` from frontend)
+    const ratingParam = req.query.rating || req.query.minRating;
+    if (ratingParam) {
+      query.rating = { $gte: Number(ratingParam) };
     }
 
     // Filter by featured

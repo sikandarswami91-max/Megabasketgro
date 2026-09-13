@@ -110,6 +110,11 @@ const orderSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
+    deliveryNotes: {
+      type: String,
+      default: '',
+      maxlength: [500, 'Delivery notes cannot exceed 500 characters'],
+    },
     deliveredAt: {
       type: Date,
     },

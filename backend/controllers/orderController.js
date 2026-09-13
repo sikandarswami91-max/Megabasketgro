@@ -8,7 +8,7 @@ import Address from '../models/Address.js';
 // @access  Private
 export const createOrder = async (req, res) => {
   try {
-    const { addressId, shippingAddress: customAddress, paymentMethod = 'COD' } = req.body;
+    const { addressId, shippingAddress: customAddress, paymentMethod = 'COD', deliveryNotes } = req.body;
 
     if (paymentMethod !== 'COD') {
       return res.status(400).json({
@@ -126,6 +126,7 @@ export const createOrder = async (req, res) => {
       itemsPrice,
       shippingPrice,
       totalAmount,
+      deliveryNotes: typeof deliveryNotes === 'string' ? deliveryNotes.trim().slice(0, 500) : '',
       statusHistory: [
         {
           status: 'Pending',
