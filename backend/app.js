@@ -18,11 +18,36 @@ dotenv.config();
 
 const app = express();
 
-// Enable CORS
+// Build allowed origins list for CORS
+// - Local development: Vite dev server default ports
+// - Production: Vercel frontend domain from FRONTEND_URL env var
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+];
+
+// Add production frontend origin from environment variable
+if (process.env.FRONTEND_URL) {
+  allowedOrigins.push(process.env.FRONTEND_URL);
+}
+
+// Enable CORS with origin whitelist
+// Note: origin '*' with credentials:true is invalid per CORS spec.
+// We use a function-based origin to reflect only allowed origins,
+// and handle requests with no Origin header (server-to-server, health checks).
 app.use(
   cors({
-    origin: '*',
+    origin: function (origin, callback) {
+      // Allow requests with no origin (mobile apps, curl, health checks, server-to-server)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error('Not allowed by CORS'));
+    },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
 
