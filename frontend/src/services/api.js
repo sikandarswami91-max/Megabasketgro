@@ -2,9 +2,8 @@ import axios from 'axios';
 
 // Base API URL:
 //  - If VITE_API_URL is set to a full http(s) URL (e.g. http://localhost:5001/api),
-//    use it directly. This is honored in local development and keeps CORS simple
-//    (backend CORS is configured with origin '*').
-//  - Otherwise fall back to the relative '/api' path, which is production-safe
+//    use it directly. This is used in local development and production.
+//  - Otherwise fall back to the relative '/api' path, which works in production
 //    when the frontend is served from the same origin as the backend. A dev
 //    proxy (`/api` -> backend) is configured in frontend/vite.config.js so that
 //    the relative path still resolves to the backend during local development.
@@ -25,6 +24,7 @@ const API_URL = getBaseApiUrl();
 
 const api = axios.create({
   baseURL: API_URL,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
