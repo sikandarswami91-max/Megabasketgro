@@ -30,7 +30,8 @@ export default function AdminCategoriesPage() {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const res = await categoryService.getCategories();
+      // all = true: include deactivated categories so they can be managed.
+      const res = await categoryService.getCategories(true);
       if (res.data.success) {
         setCategories(res.data.categories);
       }

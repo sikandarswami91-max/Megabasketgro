@@ -1,6 +1,19 @@
+# Render blueprint for the MegaBasket backend (Express + MongoDB).
+#
+# Backend entry file: backend/server.js  (backend/app.js only builds the
+# Express app - it never calls listen(); there is no server.cjs/index.js/dist).
+#
+# Render settings this blueprint reproduces:
+#   Root Directory : backend
+#   Build Command  : npm install
+#   Start Command  : npm start      ->  node server.js
+#   Health Check   : /api/health
+#
+# The server binds process.env.PORT on 0.0.0.0 (server.js), so PORT must NOT be
+# hardcoded here - Render injects it.
 services:
   - type: web
-    name: megabasket-backend
+    name: megabasketgro
     env: node
     rootDir: backend
     buildCommand: npm install
@@ -9,14 +22,17 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-      - key: PORT
-        value: 5001
-      - key: FRONTEND_URL
-        value: https://megabasketgro.vercel.app
+      # Required. Set in the Render dashboard to your MongoDB connection string.
       - key: MONGODB_URI
         sync: false
+      # Required. Set in the Render dashboard to a long random string.
       - key: JWT_SECRET
         sync: false
+      # Production frontend origin(s) allowed by the API CORS allow-list.
+      # Comma-separated values are supported.
+      - key: FRONTEND_URL
+        value: https://megabasketgro.vercel.app
+      # Optional - only needed for admin image uploads.
       - key: CLOUDINARY_CLOUD_NAME
         sync: false
       - key: CLOUDINARY_API_KEY

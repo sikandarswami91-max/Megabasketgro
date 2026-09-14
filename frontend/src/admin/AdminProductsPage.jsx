@@ -31,6 +31,8 @@ export default function AdminProductsPage() {
         page: currentPage,
         limit: 10,
         search: search.trim() || undefined,
+        // Admin view: include deactivated products so they can be re-activated.
+        admin: true,
       });
       if (res.data.success) {
         setProducts(res.data.products);

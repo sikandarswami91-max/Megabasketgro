@@ -5,7 +5,9 @@ import app from './backend/app.js';
 import { connectDB } from './backend/config/db.js';
 import { seedDatabase } from './backend/utils/seeder.js';
 
-const PORT = 3000;
+// Render (and other hosts) inject PORT. Number() keeps this a real number for
+// app.listen(); 3000 is only a local fallback.
+const PORT = Number(process.env.PORT) || 3000;
 
 async function startFullstackServer() {
   try {

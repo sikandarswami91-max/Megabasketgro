@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { getDbStatus } from './config/db.js';
 
 // Import route modules
 import authRoutes from './routes/authRoutes.js';
@@ -97,10 +98,16 @@ app.use(express.json({ limit: '15mb' }));
 app.use(express.urlencoded({ extended: true, limit: '15mb' }));
 
 // Health Check API
+// Always answers 200 while the process is alive: hosting platforms use this
+// endpoint to decide whether a deployment is healthy, so a MongoDB outage must
+// not mark the whole service as dead. The database state is reported in the
+// payload so a problem is still visible without reading the logs.
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
     app: 'MegaBasket API',
+    environment: process.env.NODE_ENV || 'development',
+    db: getDbStatus(),
     time: new Date().toISOString(),
   });
 });

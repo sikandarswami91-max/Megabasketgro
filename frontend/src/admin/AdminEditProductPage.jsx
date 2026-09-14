@@ -44,7 +44,7 @@ export default function AdminEditProductPage() {
       setLoading(true);
       const [catRes, prodRes] = await Promise.all([
         categoryService.getCategories(),
-        productService.getProductById(id),
+        productService.getByIdOrSlug(id),
       ]);
 
       if (catRes.data.success) {
