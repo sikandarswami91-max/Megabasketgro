@@ -20,16 +20,53 @@ const app = express();
 
 // Build allowed origins list for CORS
 // - Local development: Vite dev server default ports
-// - Production: Vercel frontend domain from FRONTEND_URL env var
+// - Production: the deployed Vercel frontend. The browser always calls the API
+//   through the Vercel "/api" rewrite (see vercel.json), so the API only ever
+//   sees Vercel origins in production.
+// - Extra origins: the FRONTEND_URL env var accepts a comma-separated list and
+//   simple "*" wildcards, e.g.
+//   FRONTEND_URL="https://shop.example.com,https://*.vercel.app"
 const allowedOrigins = [
   'http://localhost:5173',
   'http://127.0.0.1:5173',
+  'https://megabasketgro.vercel.app',
 ];
 
-// Add production frontend origin from environment variable
 if (process.env.FRONTEND_URL) {
-  allowedOrigins.push(process.env.FRONTEND_URL);
+  process.env.FRONTEND_URL.split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean)
+    .forEach((origin) => allowedOrigins.push(origin));
 }
+
+// Match an origin against the allow-list. Entries may contain "*" wildcards.
+const matchesAllowedOrigin = (origin) =>
+  allowedOrigins.some((allowed) => {
+    if (allowed === origin) return true;
+    if (!allowed.includes('*')) return false;
+    const pattern = allowed
+      .replace(/[.+?^${}()|[\]\\]/g, '\\$&')
+      .replace(/\*/g, '.*');
+    return new RegExp(`^${pattern}$`).test(origin);
+  });
+
+// Vercel preview deployments of this project use origins like
+// megabasketgro-git-<branch>-<scope>.vercel.app. They reach the API through the
+// same "/api" rewrite as production, so allow the project's own domains without
+// needing a dashboard change for every preview URL.
+const isProjectVercelOrigin = (origin) => {
+  try {
+    const { protocol, hostname, port } = new URL(origin);
+    return (
+      protocol === 'https:' &&
+      !port &&
+      hostname.endsWith('.vercel.app') &&
+      /^megabasketgro(-|\.)/i.test(hostname)
+    );
+  } catch {
+    return false;
+  }
+};
 
 // Enable CORS with origin whitelist
 // Note: origin '*' with credentials:true is invalid per CORS spec.
@@ -40,10 +77,14 @@ app.use(
     origin: function (origin, callback) {
       // Allow requests with no origin (mobile apps, curl, health checks, server-to-server)
       if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) {
+      if (matchesAllowedOrigin(origin) || isProjectVercelOrigin(origin)) {
         return callback(null, true);
       }
-      return callback(new Error('Not allowed by CORS'));
+      // Deny unknown origins by simply omitting the CORS headers. Throwing here
+      // (the previous behaviour) turned every disallowed origin into a 500
+      // "Internal Server Error", which made a wrong FRONTEND_URL look like a
+      // crashed API instead of a browser CORS block.
+      return callback(null, false);
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
