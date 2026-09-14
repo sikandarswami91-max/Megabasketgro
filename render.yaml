@@ -5,13 +5,14 @@ services:
     rootDir: backend
     buildCommand: npm install
     startCommand: npm start
+    healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 5001
       - key: FRONTEND_URL
-        value: 
+        value: https://megabasketgro.vercel.app
       - key: MONGODB_URI
         sync: false
       - key: JWT_SECRET
