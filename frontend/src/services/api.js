@@ -22,6 +22,11 @@ const getBaseApiUrl = () => {
 
 const API_URL = getBaseApiUrl();
 
+// Debug: Log API URL in development mode only
+if (import.meta.env.DEV) {
+  console.log('[API] Base URL:', API_URL);
+}
+
 const api = axios.create({
   baseURL: API_URL,
   withCredentials: true,

@@ -32,6 +32,7 @@ export default function HomePage() {
   const [bestSellers, setBestSellers] = useState([]);
   const [dailyEssentials, setDailyEssentials] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [apiError, setApiError] = useState(false);
 
   const categoryScrollRef = useRef(null);
 
@@ -41,6 +42,7 @@ export default function HomePage() {
     const loadHomeData = async () => {
       try {
         setLoading(true);
+        setApiError(false);
 
         const [catRes, allProdsRes] = await Promise.allSettled([
           categoryService.getCategories(),
@@ -72,6 +74,14 @@ export default function HomePage() {
         let allProducts = [];
         if (allProdsRes.status === 'fulfilled' && allProdsRes.value?.data?.success) {
           allProducts = allProdsRes.value.data.products || [];
+        } else if (allProdsRes.status === 'rejected') {
+          // API call failed (network error, CORS, server down)
+          setApiError(true);
+        }
+
+        // If we got no products and there was an error, stop here
+        if (allProducts.length === 0 && allProdsRes.status === 'rejected') {
+          return;
         }
 
         // 1. Fresh Fruits
@@ -393,6 +403,8 @@ export default function HomePage() {
 
         {loading ? (
           <SkeletonLoader type="product" count={4} />
+        ) : apiError ? (
+          <p className="text-xs text-red-500 py-4">Unable to load products. Please check your connection or try again later.</p>
         ) : freshFruits.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
             {freshFruits.map((product) => (
@@ -431,6 +443,8 @@ export default function HomePage() {
 
         {loading ? (
           <SkeletonLoader type="product" count={4} />
+        ) : apiError ? (
+          <p className="text-xs text-red-500 py-4">Unable to load products. Please check your connection or try again later.</p>
         ) : freshVegetables.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
             {freshVegetables.map((product) => (
@@ -469,6 +483,8 @@ export default function HomePage() {
 
         {loading ? (
           <SkeletonLoader type="product" count={4} />
+        ) : apiError ? (
+          <p className="text-xs text-red-500 py-4">Unable to load products. Please check your connection or try again later.</p>
         ) : dairyBreakfast.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
             {dairyBreakfast.map((product) => (
@@ -507,6 +523,8 @@ export default function HomePage() {
 
         {loading ? (
           <SkeletonLoader type="product" count={4} />
+        ) : apiError ? (
+          <p className="text-xs text-red-500 py-4">Unable to load products. Please check your connection or try again later.</p>
         ) : bestSellers.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
             {bestSellers.map((product) => (
@@ -545,6 +563,8 @@ export default function HomePage() {
 
         {loading ? (
           <SkeletonLoader type="product" count={4} />
+        ) : apiError ? (
+          <p className="text-xs text-red-500 py-4">Unable to load products. Please check your connection or try again later.</p>
         ) : dailyEssentials.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
             {dailyEssentials.map((product) => (
